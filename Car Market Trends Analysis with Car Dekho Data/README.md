@@ -44,10 +44,3 @@ The dataset contains **301 records** and **9 columns** with **0 missing values**
 - **Mileage (`Kms_Driven`):** Average distance driven is **~36,947 km**, with a minimum of **500 km** and a maximum of **500,000 km**[cite: 1].
 
 ---
-
-## How to Run
-
-1. Clone or download this repository:
-   ```bash
-   git clone [(https://github.com/irfan-shekh/ML_Projects/tree/main/Car%20Market%20Trends%20Analysis%20with%20Car%20Dekho%20Data)>.git
-   cd <ML_Projects>
