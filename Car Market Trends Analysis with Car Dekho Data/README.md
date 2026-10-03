@@ -49,5 +49,5 @@ The dataset contains **301 records** and **9 columns** with **0 missing values**
 
 1. Clone or download this repository:
    ```bash
-   git clone [https://github.com/](https://github.com/)<your-username>/<your-repo-name>.git
-   cd <your-repo-name>
+   git clone [[https://github.com/](https://github.com/)<your-username>/<your-repo-name](https://github.com/irfan-shekh/ML_Projects/tree/main/Car%20Market%20Trends%20Analysis%20with%20Car%20Dekho%20Data)>.git
+   cd <ML_Projects>
