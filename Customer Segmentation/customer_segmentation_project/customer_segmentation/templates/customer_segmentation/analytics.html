@@ -1,0 +1,253 @@
+{% extends 'customer_segmentation/base.html' %}
+
+{% block title %}Analytics Dashboard{% endblock %}
+
+{% block content %}
+<!-- Header -->
+<div class="hero-section" style="padding: 2rem 0;">
+    <div class="container">
+        <h1 class="display-5 fw-bold mb-3">
+            <i class="bi bi-graph-up"></i> Analytics Dashboard
+        </h1>
+        <p class="lead">Comprehensive insights and statistics from customer segmentation</p>
+    </div>
+</div>
+
+<!-- Main Content -->
+<div class="container">
+    <!-- Key Statistics -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="stats-card">
+                <div class="stats-number">{{ total_segmentations }}</div>
+                <small>Total Segmentations</small>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stats-card">
+                <div class="stats-number">{{ avg_confidence|floatformat:2 }}</div>
+                <small>Avg Confidence</small>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stats-card">
+                <div class="stats-number">{{ segment_distribution|length }}</div>
+                <small>Active Segments</small>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stats-card">
+                <div class="stats-number">{{ method_distribution|length }}</div>
+                <small>ML Models Used</small>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Segment Distribution Chart -->
+        <div class="col-lg-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <i class="bi bi-pie-chart-fill"></i> Segment Distribution
+                    </h5>
+                    <canvas id="segmentChart" width="400" height="300"></canvas>
+                    
+                    <!-- Segment Details -->
+                    <div class="mt-3">
+                        {% for segment in segment_distribution %}
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span>
+                                    <span class="segment-badge segment-{{ segment.predicted_segmentation|lower }} me-2">
+                                        {{ segment.predicted_segmentation }}
+                                    </span>
+                                    Segment {{ segment.predicted_segmentation }}
+                                </span>
+                                <strong>{{ segment.count }} customers</strong>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Model Performance Chart -->
+        <div class="col-lg-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <i class="bi bi-bar-chart-fill"></i> Model Usage
+                    </h5>
+                    <canvas id="modelChart" width="400" height="300"></canvas>
+                    
+                    <!-- Model Details -->
+                    <div class="mt-3">
+                        {% for method in method_distribution %}
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span>
+                                    <i class="bi bi-cpu me-2"></i>
+                                    {{ method.prediction_method|title }}
+                                </span>
+                                <strong>{{ method.count }} predictions</strong>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <i class="bi bi-clock-history"></i> Recent Segmentations
+                    </h5>
+                    
+                    {% if recent_segmentations %}
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Customer</th>
+                                        <th>Profession</th>
+                                        <th>Segment</th>
+                                        <th>Model</th>
+                                        <th>Confidence</th>
+                                        <th>Time</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for seg in recent_segmentations %}
+                                        <tr>
+                                            <td>{{ seg.id }}</td>
+                                            <td>{{ seg.gender }}, {{ seg.age }}y</td>
+                                            <td>{{ seg.profession }}</td>
+                                            <td>
+                                                <span class="segment-badge segment-{{ seg.predicted_segmentation|lower }}">
+                                                    {{ seg.predicted_segmentation }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-info">{{ seg.prediction_method|title }}</span>
+                                            </td>
+                                            <td>{{ seg.confidence_score|floatformat:2 }}</td>
+                                            <td>{{ seg.created_at|time:"H:i" }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="text-center py-4">
+                            <i class="bi bi-inbox" style="font-size: 3rem; color: #ccc;"></i>
+                            <p class="text-muted mt-2">No recent segmentations</p>
+                        </div>
+                    {% endif %}
+                    
+                    <div class="mt-3">
+                        <a href="{% url 'customer_segmentation:segmentation_history' %}" class="btn btn-outline-primary">
+                            View All History <i class="bi bi-arrow-right"></i>
+                        </a>
+                        <a href="{% url 'customer_segmentation:home' %}" class="btn btn-gradient">
+                            New Segmentation <i class="bi bi-plus-circle"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Pass Django data to JavaScript
+window.chartData = {
+    segments: {
+        labels: [{% for segment in segment_distribution %}'Segment {{ segment.predicted_segmentation }}'{% if not forloop.last %},{% endif %}{% endfor %}],
+        data: [{% for segment in segment_distribution %}{{ segment.count }}{% if not forloop.last %},{% endif %}{% endfor %}]
+    },
+    methods: {
+        labels: [{% for method in method_distribution %}'{{ method.prediction_method|title }}'{% if not forloop.last %},{% endif %}{% endfor %}],
+        data: [{% for method in method_distribution %}{{ method.count }}{% if not forloop.last %},{% endif %}{% endfor %}]
+    }
+};
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Segment Distribution Chart
+    const segmentCtx = document.getElementById('segmentChart').getContext('2d');
+    const segmentData = {
+        labels: window.chartData.segments.labels,
+        datasets: [{
+            data: window.chartData.segments.data,
+            backgroundColor: [
+                'rgba(255, 107, 107, 0.8)',
+                'rgba(78, 205, 196, 0.8)',
+                'rgba(69, 183, 209, 0.8)',
+                'rgba(247, 183, 49, 0.8)'
+            ],
+            borderColor: [
+                'rgba(255, 107, 107, 1)',
+                'rgba(78, 205, 196, 1)',
+                'rgba(69, 183, 209, 1)',
+                'rgba(247, 183, 49, 1)'
+            ],
+            borderWidth: 2
+        }]
+    };
+    
+    new Chart(segmentCtx, {
+        type: 'doughnut',
+        data: segmentData,
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                }
+            }
+        }
+    });
+    
+    // Model Usage Chart
+    const modelCtx = document.getElementById('modelChart').getContext('2d');
+    const modelData = {
+        labels: window.chartData.methods.labels,
+        datasets: [{
+            label: 'Number of Predictions',
+            data: window.chartData.methods.data,
+            backgroundColor: 'rgba(102, 126, 234, 0.8)',
+            borderColor: 'rgba(102, 126, 234, 1)',
+            borderWidth: 2
+        }]
+    };
+    
+    new Chart(modelCtx, {
+        type: 'bar',
+        data: modelData,
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        stepSize: 1
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    display: false
+                }
+            }
+        }
+    });
+});
+</script>
+{% endblock %}

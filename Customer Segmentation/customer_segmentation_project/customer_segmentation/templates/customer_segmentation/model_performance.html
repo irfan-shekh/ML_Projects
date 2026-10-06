@@ -1,0 +1,143 @@
+{% extends 'customer_segmentation/base.html' %}
+
+{% block title %}Model Performance{% endblock %}
+
+{% block content %}
+<!-- Header -->
+<div class="hero-section" style="padding: 2rem 0;">
+    <div class="container">
+        <h1 class="display-5 fw-bold mb-3">
+            <i class="bi bi-cpu"></i> Model Performance
+        </h1>
+        <p class="lead">Machine learning model metrics and performance analysis</p>
+    </div>
+</div>
+
+<!-- Main Content -->
+<div class="container">
+    <div class="row">
+        <!-- Current Model Performance -->
+        <div class="col-lg-8 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <i class="bi bi-speedometer2"></i> Model Metrics
+                    </h5>
+                    
+                    <div class="row">
+                        {% for model_name, metrics in performance_data.items %}
+                            <div class="col-md-4 mb-4">
+                                <div class="stats-card">
+                                    <h6 class="text-primary">{{ model_name }}</h6>
+                                    {% for metric, value in metrics.items %}
+                                        <div class="d-flex justify-content-between mb-1">
+                                            <small>{{ metric|title }}:</small>
+                                            <strong>{{ value|floatformat:3 }}</strong>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Model Information -->
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <i class="bi bi-info-circle"></i> Model Information
+                    </h5>
+                    
+                    <div class="mb-3">
+                        <h6>Random Forest</h6>
+                        <p class="small text-muted">Ensemble learning method using multiple decision trees. Best for overall accuracy.</p>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <h6>Decision Tree</h6>
+                        <p class="small text-muted">Simple, interpretable model that makes decisions using tree-like structure.</p>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <h6>KMeans Clustering</h6>
+                        <p class="small text-muted">Unsupervised learning for grouping similar customers based on features.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Historical Performance -->
+    {% if performance_records %}
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <i class="bi bi-clock-history"></i> Historical Performance
+                        </h5>
+                        
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Model Name</th>
+                                        <th>Accuracy Score</th>
+                                        <th>Training Date</th>
+                                        <th>Parameters</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for record in performance_records %}
+                                        <tr>
+                                            <td>{{ record.model_name }}</td>
+                                            <td>{{ record.accuracy_score|floatformat:3 }}</td>
+                                            <td>{{ record.training_date|date:"M d, Y H:i" }}</td>
+                                            <td>
+                                                {% if record.parameters %}
+                                                    <small class="text-muted">{{ record.parameters|length }} parameters</small>
+                                                {% else %}
+                                                    <small class="text-muted">N/A</small>
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+    
+    <!-- Actions -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h5 class="card-title">
+                        <i class="bi bi-tools"></i> Model Management
+                    </h5>
+                    <p class="text-muted">Manage and monitor your machine learning models</p>
+                    
+                    <div class="d-flex gap-3 justify-content-center">
+                        <a href="{% url 'customer_segmentation:home' %}" class="btn btn-gradient">
+                            <i class="bi bi-plus-circle"></i> Test Models
+                        </a>
+                        <a href="{% url 'customer_segmentation:analytics' %}" class="btn btn-outline-primary">
+                            <i class="bi bi-graph-up"></i> View Analytics
+                        </a>
+                        <a href="/admin/customer_segmentation/modelperformance/" class="btn btn-outline-secondary">
+                            <i class="bi bi-gear"></i> Admin Panel
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

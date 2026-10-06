@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artist Sculpture Cost Prediction - ML Powered Pricing</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="title">Artist Sculpture Cost Prediction</h1>
+            <p class="subtitle">Advanced ML-powered pricing for custom sculptures and artwork</p>
+        </div>
+
+        <div class="info-section">
+            <h2 class="info-title">🎨 How It Works</h2>
+            <p class="info-text">
+                Our machine learning model analyzes various factors including artist reputation, 
+                materials, dimensions, and shipping requirements to provide accurate cost predictions 
+                for custom sculptures.
+            </p>
+            <ul class="feature-list">
+                <li class="feature-item">97.5% Training Accuracy</li>
+                <li class="feature-item">84.1% Test Accuracy</li>
+                <li class="feature-item">15 Feature Analysis</li>
+                <li class="feature-item">Random Forest Model</li>
+                <li class="feature-item">Real-time Predictions</li>
+                <li class="feature-item">Professional Grade</li>
+            </ul>
+        </div>
+
+        <form method="post" action="" id="predictionForm">
+            {% csrf_token %}
+            
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="Name">Artist Name *</label>
+                    <input type="text" id="Name" name="Name" class="form-control" placeholder="Enter artist name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="repute">Artist Reputation (0-1) *</label>
+                    <input type="number" id="repute" name="repute" class="form-control" 
+                           placeholder="0.0 - 1.0" step="0.01" min="0" max="1" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="Height">Height (meters) *</label>
+                    <input type="number" id="Height" name="Height" class="form-control" 
+                           placeholder="e.g., 1.5" step="0.1" min="0.1" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="Width">Width (meters) *</label>
+                    <input type="number" id="Width" name="Width" class="form-control" 
+                           placeholder="e.g., 0.8" step="0.1" min="0.1" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="Weight">Weight (grams) *</label>
+                    <input type="number" id="Weight" name="Weight" class="form-control" 
+                           placeholder="e.g., 5000" step="1" min="1" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="material">Material *</label>
+                    <select id="material" name="material" class="form-control" required>
+                        <option value="">Select material</option>
+                        <option value="0">Aluminium</option>
+                        <option value="1">Brass</option>
+                        <option value="2">Bronze</option>
+                        <option value="3">Clay</option>
+                        <option value="4">Marble</option>
+                        <option value="5">Stone</option>
+                        <option value="6">Wood</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="basePrice">Base Sculpture Price ($) *</label>
+                    <input type="number" id="basePrice" name="basePrice" class="form-control" 
+                           placeholder="e.g., 1000" step="0.01" min="0.01" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="basePriceShipping">Base Shipping Price ($) *</label>
+                    <input type="number" id="basePriceShipping" name="basePriceShipping" class="form-control" 
+                           placeholder="e.g., 50" step="0.01" min="0.01" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="international">International Shipping</label>
+                    <select id="international" name="international" class="form-control">
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="expressShipment">Express Shipment</label>
+                    <select id="expressShipment" name="expressShipment" class="form-control">
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="installments">Installation Included</label>
+                    <select id="installments" name="installments" class="form-control">
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="Transport">Transport Method</label>
+                    <select id="Transport" name="Transport" class="form-control">
+                        <option value="0">Airways</option>
+                        <option value="1">Roadways</option>
+                        <option value="2">Waterways</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="Fragile">Fragile Item</label>
+                    <select id="Fragile" name="Fragile" class="form-control">
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="cust">Customer Type</label>
+                    <select id="cust" name="cust" class="form-control">
+                        <option value="0">Wealthy</option>
+                        <option value="1">Working Class</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="remote">Remote Location</label>
+                    <select id="remote" name="remote" class="form-control">
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="waiting">Waiting Time (days) *</label>
+                    <input type="number" id="waiting" name="waiting" class="form-control" 
+                           placeholder="e.g., 5" step="1" required>
+                </div>
+            </div>
+
+            <div class="btn-container">
+                <button type="submit" name="pred_button" class="btn btn-primary" id="predictBtn">
+                    <span class="btn-text">🔮 Predict Cost</span>
+                    <span class="loading" style="display: none;"></span>
+                </button>
+                <button type="button" class="btn btn-secondary" id="sampleBtn">
+                    📋 Fill Sample Data
+                </button>
+            </div>
+        </form>
+
+        {% if error %}
+        <div class="error-container">
+            <div class="error-message">
+                ⚠️ {{ error }}
+            </div>
+        </div>
+        {% endif %}
+
+        {% if response and response != 0 %}
+        <div class="result-container show" id="resultContainer">
+            <h3 class="result-title">💰 Predicted Sculpture Cost</h3>
+            <div class="result-value">${{ response|floatformat:2 }}</div>
+            <div class="result-currency">USD</div>
+        </div>
+        {% endif %}
+    </div>
+
+    <script>
+        // Sample data functionality
+        document.getElementById('sampleBtn').addEventListener('click', function() {
+            document.getElementById('Name').value = 'John Smith';
+            document.getElementById('repute').value = '0.75';
+            document.getElementById('Height').value = '1.8';
+            document.getElementById('Width').value = '1.2';
+            document.getElementById('Weight').value = '8500';
+            document.getElementById('material').value = '2'; // Bronze
+            document.getElementById('basePrice').value = '2500';
+            document.getElementById('basePriceShipping').value = '150';
+            document.getElementById('international').value = '0';
+            document.getElementById('expressShipment').value = '1';
+            document.getElementById('installments').value = '1';
+            document.getElementById('Transport').value = '0';
+            document.getElementById('Fragile').value = '1';
+            document.getElementById('cust').value = '0';
+            document.getElementById('remote').value = '0';
+            document.getElementById('waiting').value = '7';
+        });
+
+        // Form submission loading state
+        document.getElementById('predictionForm').addEventListener('submit', function() {
+            const btn = document.getElementById('predictBtn');
+            btn.classList.add('loading');
+            btn.querySelector('.btn-text').style.display = 'none';
+            btn.querySelector('.loading').style.display = 'inline-block';
+            btn.disabled = true;
+        });
+
+        // Input validation
+        document.getElementById('repute').addEventListener('input', function() {
+            if (this.value < 0) this.value = 0;
+            if (this.value > 1) this.value = 1;
+        });
+
+        // Smooth scroll to result
+        {% if response and response != 0 %}
+        setTimeout(function() {
+            const resultContainer = document.getElementById('resultContainer');
+            if (resultContainer) {
+                resultContainer.scrollIntoView({ 
+                    behavior: 'smooth', 
+                    block: 'center' 
+                });
+            }
+        }, 100);
+        {% endif %}
+    </script>
+</body>
+</html>
