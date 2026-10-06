@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mushroom Classification - Edible or Poisonous?</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2c7a2c;
+            --secondary-color: #8b4513;
+            --danger-color: #dc3545;
+            --success-color: #28a745;
+            --light-bg: #f8f9fa;
+            --border-color: #dee2e6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px 0;
+        }
+
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+            animation: fadeInDown 0.8s ease;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .form-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            padding: 30px;
+            margin-bottom: 30px;
+            animation: fadeInUp 0.8s ease;
+        }
+
+        .form-section {
+            margin-bottom: 25px;
+        }
+
+        .form-section h3 {
+            color: var(--primary-color);
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 5px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .form-group select {
+            width: 100%;
+            padding: 10px 15px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            background-color: white;
+        }
+
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(44, 122, 44, 0.1);
+        }
+
+        .btn-container {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .btn-submit {
+            background: linear-gradient(45deg, var(--primary-color), #4a9d4a);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(44, 122, 44, 0.3);
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(44, 122, 44, 0.4);
+        }
+
+        .btn-sample {
+            background: linear-gradient(45deg, var(--secondary-color), #a0522d);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(139, 69, 19, 0.3);
+        }
+
+        .btn-sample:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(139, 69, 19, 0.4);
+        }
+
+        .result-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            animation: fadeInUp 0.8s ease;
+        }
+
+        .result-edible {
+            border-left: 5px solid var(--success-color);
+        }
+
+        .result-poisonous {
+            border-left: 5px solid var(--danger-color);
+        }
+
+        .result-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+
+        .result-edible .result-icon {
+            color: var(--success-color);
+        }
+
+        .result-poisonous .result-icon {
+            color: var(--danger-color);
+        }
+
+        .result-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .result-edible .result-title {
+            color: var(--success-color);
+        }
+
+        .result-poisonous .result-title {
+            color: var(--danger-color);
+        }
+
+        .result-description {
+            color: #666;
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+        }
+
+        .alert-danger {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .info-box {
+            background: linear-gradient(45deg, #e3f2fd, #f3e5f5);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .info-box h4 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .btn-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn-submit, .btn-sample {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="header">
+            <h1><i class="fas fa-seedling"></i> Mushroom Classification</h1>
+            <p>Discover if a mushroom is edible or poisonous using machine learning</p>
+        </div>
+
+        <div class="info-box">
+            <h4><i class="fas fa-info-circle"></i> How to Use</h4>
+            <p>Select the characteristics of the mushroom you want to classify. Our ML model will analyze the features and predict whether it's edible or poisonous. For quick testing, use the "Fill Sample Data" button.</p>
+        </div>
+
+        <div class="form-card">
+            <form method="post" action="" id="mushroomForm">
+                {% csrf_token %}
+                
+                <div class="form-section">
+                    <h3><i class="fas fa-cap"></i> Cap Characteristics</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="capShape">Cap Shape</label>
+                            <select name="capShape" id="capShape" required>
+                                <option value="">Select cap shape...</option>
+                                <option value="0">Bell</option>
+                                <option value="1">Conical</option>
+                                <option value="2">Flat</option>
+                                <option value="3">Knobbed</option>
+                                <option value="4">Sunken</option>
+                                <option value="5">Convex</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="CapSurface">Cap Surface</label>
+                            <select name="CapSurface" id="CapSurface" required>
+                                <option value="">Select cap surface...</option>
+                                <option value="0">Fibrous</option>
+                                <option value="1">Grooves</option>
+                                <option value="2">Smooth</option>
+                                <option value="3">Scaly</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="capColor">Cap Color</label>
+                            <select name="capColor" id="capColor" required>
+                                <option value="">Select cap color...</option>
+                                <option value="0">Buff</option>
+                                <option value="1">Cinnamon</option>
+                                <option value="2">Red</option>
+                                <option value="3">Grey</option>
+                                <option value="4">Brown</option>
+                                <option value="5">Pink</option>
+                                <option value="6">Green</option>
+                                <option value="7">Purple</option>
+                                <option value="8">White</option>
+                                <option value="9">Yellow</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3><i class="fas fa-eye"></i> Sensory Characteristics</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="bruises">Bruises</label>
+                            <select name="bruises" id="bruises" required>
+                                <option value="">Select bruise status...</option>
+                                <option value="0">No</option>
+                                <option value="1">Yes</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="odor">Odor</label>
+                            <select name="odor" id="odor" required>
+                                <option value="">Select odor...</option>
+                                <option value="0">Almond</option>
+                                <option value="1">Creosote</option>
+                                <option value="2">Foul</option>
+                                <option value="3">Anise</option>
+                                <option value="4">Musty</option>
+                                <option value="5">None</option>
+                                <option value="6">Pungent</option>
+                                <option value="7">Spicy</option>
+                                <option value="8">Fishy</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3><i class="fas fa-layer-group"></i> Gill Characteristics</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="gillAttach">Gill Attachment</label>
+                            <select name="gillAttach" id="gillAttach" required>
+                                <option value="">Select attachment...</option>
+                                <option value="0">Attached</option>
+                                <option value="1">Free</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="gillSpace">Gill Spacing</label>
+                            <select name="gillSpace" id="gillSpace" required>
+                                <option value="">Select spacing...</option>
+                                <option value="0">Closed</option>
+                                <option value="1">Crowded</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="gillSize">Gill Size</label>
+                            <select name="gillSize" id="gillSize" required>
+                                <option value="">Select size...</option>
+                                <option value="0">Broad</option>
+                                <option value="1">Narrow</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="gillColor">Gill Color</label>
+                            <select name="gillColor" id="gillColor" required>
+                                <option value="">Select color...</option>
+                                <option value="0">Buff</option>
+                                <option value="1">Red</option>
+                                <option value="2">Gray</option>
+                                <option value="3">Chocolate</option>
+                                <option value="4">Black</option>
+                                <option value="5">Brown</option>
+                                <option value="6">Orange</option>
+                                <option value="7">Pink</option>
+                                <option value="8">Green</option>
+                                <option value="9">Purple</option>
+                                <option value="10">White</option>
+                                <option value="11">Yellow</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3><i class="fas fa-stroopwafel"></i> Stalk Characteristics</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="stalkShape">Stalk Shape</label>
+                            <select name="stalkShape" id="stalkShape" required>
+                                <option value="">Select shape...</option>
+                                <option value="0">Enlarging</option>
+                                <option value="1">Tapering</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="stalkRoot">Stalk Root</label>
+                            <select name="stalkRoot" id="stalkRoot" required>
+                                <option value="">Select root type...</option>
+                                <option value="0">Missing</option>
+                                <option value="1">Bulbous</option>
+                                <option value="2">Club</option>
+                                <option value="3">Equal</option>
+                                <option value="4">Rooted</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="stalkARing">Stalk Surface Above Ring</label>
+                            <select name="stalkARing" id="stalkARing" required>
+                                <option value="">Select surface...</option>
+                                <option value="0">Fibrous</option>
+                                <option value="1">Silky</option>
+                                <option value="2">Smooth</option>
+                                <option value="3">Scaly</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="stalkBRing">Stalk Surface Below Ring</label>
+                            <select name="stalkBRing" id="stalkBRing" required>
+                                <option value="">Select surface...</option>
+                                <option value="0">Fibrous</option>
+                                <option value="1">Silky</option>
+                                <option value="2">Smooth</option>
+                                <option value="3">Scaly</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="stalkCARing">Stalk Color Above Ring</label>
+                            <select name="stalkCARing" id="stalkCARing" required>
+                                <option value="">Select color...</option>
+                                <option value="0">Buff</option>
+                                <option value="1">Cinnamon</option>
+                                <option value="2">Red</option>
+                                <option value="3">Grey</option>
+                                <option value="4">Brown</option>
+                                <option value="5">Orange</option>
+                                <option value="6">Pink</option>
+                                <option value="7">White</option>
+                                <option value="8">Yellow</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="stalkCBRing">Stalk Color Below Ring</label>
+                            <select name="stalkCBRing" id="stalkCBRing" required>
+                                <option value="">Select color...</option>
+                                <option value="0">Buff</option>
+                                <option value="1">Cinnamon</option>
+                                <option value="2">Red</option>
+                                <option value="3">Grey</option>
+                                <option value="4">Brown</option>
+                                <option value="5">Orange</option>
+                                <option value="6">Pink</option>
+                                <option value="7">White</option>
+                                <option value="8">Yellow</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3><i class="fas fa-ring"></i> Veil and Ring Characteristics</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="veilType">Veil Type</label>
+                            <select name="veilType" id="veilType" required>
+                                <option value="">Select type...</option>
+                                <option value="0">Partial</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="veilColor">Veil Color</label>
+                            <select name="veilColor" id="veilColor" required>
+                                <option value="">Select color...</option>
+                                <option value="0">Brown</option>
+                                <option value="1">Orange</option>
+                                <option value="2">White</option>
+                                <option value="3">Yellow</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="ringNumber">Ring Number</label>
+                            <select name="ringNumber" id="ringNumber" required>
+                                <option value="">Select number...</option>
+                                <option value="0">None</option>
+                                <option value="1">One</option>
+                                <option value="2">Two</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="ringType">Ring Type</label>
+                            <select name="ringType" id="ringType" required>
+                                <option value="">Select type...</option>
+                                <option value="0">Evanescent</option>
+                                <option value="1">Flaring</option>
+                                <option value="2">Large</option>
+                                <option value="3">None</option>
+                                <option value="4">Pendant</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3><i class="fas fa-microscope"></i> Spore and Habitat Characteristics</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="sporePrintColor">Spore Print Color</label>
+                            <select name="sporePrintColor" id="sporePrintColor" required>
+                                <option value="">Select color...</option>
+                                <option value="0">Buff</option>
+                                <option value="1">Chocolate</option>
+                                <option value="2">Black</option>
+                                <option value="3">Brown</option>
+                                <option value="4">Orange</option>
+                                <option value="5">Green</option>
+                                <option value="6">Purple</option>
+                                <option value="7">White</option>
+                                <option value="8">Yellow</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="pop">Population</label>
+                            <select name="pop" id="pop" required>
+                                <option value="">Select population...</option>
+                                <option value="0">Abundant</option>
+                                <option value="1">Clustered</option>
+                                <option value="2">Numerous</option>
+                                <option value="3">Scattered</option>
+                                <option value="4">Several</option>
+                                <option value="5">Solitary</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="hab">Habitat</label>
+                            <select name="hab" id="hab" required>
+                                <option value="">Select habitat...</option>
+                                <option value="0">Woods</option>
+                                <option value="1">Grasses</option>
+                                <option value="2">Leaves</option>
+                                <option value="3">Meadows</option>
+                                <option value="4">Paths</option>
+                                <option value="5">Urban</option>
+                                <option value="6">Waste</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="btn-container">
+                    <button type="submit" name="pred_button" class="btn-submit">
+                        <i class="fas fa-search"></i> Classify Mushroom
+                    </button>
+                    <button type="button" class="btn-sample" onclick="fillSampleData()">
+                        <i class="fas fa-magic"></i> Fill Sample Data
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        {% if error_message %}
+            <div class="alert alert-danger">
+                <i class="fas fa-exclamation-triangle"></i> {{ error_message }}
+            </div>
+        {% endif %}
+
+        {% if response %}
+            <div class="result-card {% if response == 'edible' %}result-edible{% else %}result-poisonous{% endif %}">
+                <div class="result-icon">
+                    {% if response == 'edible' %}
+                        <i class="fas fa-check-circle"></i>
+                    {% else %}
+                        <i class="fas fa-exclamation-triangle"></i>
+                    {% endif %}
+                </div>
+                <div class="result-title">
+                    {% if response == 'edible' %}
+                        Edible Mushroom
+                    {% else %}
+                        Poisonous Mushroom
+                    {% endif %}
+                </div>
+                <div class="result-description">
+                    {% if response == 'edible' %}
+                        Based on the characteristics provided, this mushroom is classified as edible and safe to consume.
+                    {% else %}
+                        Based on the characteristics provided, this mushroom is classified as poisonous and should not be consumed.
+                    {% endif %}
+                </div>
+                <button type="button" class="btn-submit" onclick="resetForm()">
+                    <i class="fas fa-redo"></i> Classify Another
+                </button>
+            </div>
+        {% endif %}
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function fillSampleData() {
+            const sampleData = {
+                'capShape': '5',
+                'CapSurface': '2',
+                'capColor': '4',
+                'bruises': '1',
+                'odor': '5',
+                'gillAttach': '1',
+                'gillSpace': '1',
+                'gillSize': '0',
+                'gillColor': '10',
+                'stalkShape': '0',
+                'stalkRoot': '1',
+                'stalkARing': '2',
+                'stalkBRing': '2',
+                'stalkCARing': '7',
+                'stalkCBRing': '7',
+                'veilType': '0',
+                'veilColor': '2',
+                'ringNumber': '1',
+                'ringType': '4',
+                'sporePrintColor': '7',
+                'pop': '3',
+                'hab': '0'
+            };
+
+            Object.keys(sampleData).forEach(key => {
+                const element = document.getElementById(key);
+                if (element) {
+                    element.value = sampleData[key];
+                }
+            });
+
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function resetForm() {
+            document.getElementById('mushroomForm').reset();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Add form validation
+        document.getElementById('mushroomForm').addEventListener('submit', function(e) {
+            const selects = this.querySelectorAll('select[required]');
+            let isValid = true;
+
+            selects.forEach(select => {
+                if (!select.value) {
+                    isValid = false;
+                    select.style.borderColor = '#dc3545';
+                } else {
+                    select.style.borderColor = '#dee2e6';
+                }
+            });
+
+            if (!isValid) {
+                e.preventDefault();
+                alert('Please fill in all required fields before submitting.');
+            }
+        });
+
+        // Remove red border when user starts typing
+        document.querySelectorAll('select').forEach(select => {
+            select.addEventListener('change', function() {
+                if (this.value) {
+                    this.style.borderColor = '#dee2e6';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
