@@ -3,78 +3,180 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prediction Result - Laptop Price Predictor</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #f5f5f5;
-        }
-        .container {
-            background-color: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            text-align: center;
-        }
-        h1 {
-            color: #333;
-            margin-bottom: 30px;
-        }
-        .result-box {
-            background-color: #e8f5e8;
-            border: 2px solid #4caf50;
-            border-radius: 10px;
-            padding: 30px;
-            margin: 20px 0;
-        }
-        .price-range {
-            font-size: 24px;
-            font-weight: bold;
-            color: #2e7d32;
-            margin: 20px 0;
-        }
-        .btn {
-            background-color: #007bff;
-            color: white;
-            padding: 12px 30px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            text-decoration: none;
-            display: inline-block;
-            margin: 10px;
-        }
-        .btn:hover {
-            background-color: #0056b3;
-        }
-        .btn-secondary {
-            background-color: #6c757d;
-        }
-        .btn-secondary:hover {
-            background-color: #545b62;
-        }
-    </style>
+    <meta name="description" content="AI Laptop Price Prediction Result. Detailed hardware valuation breakdown and specifications summary.">
+    <meta name="theme-color" content="#070a13">
+    <title>Valuation Result | LapPulse AI</title>
+    
+    <!-- Link External Stylesheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-    <div class="container">
-        <h1>Price Prediction Result</h1>
-        
-        <div class="result-box">
-            <h2>Predicted Price Range</h2>
-            <div class="price-range">
-                ₹{{ "{:,}".format(min_price) }} - ₹{{ "{:,}".format(max_price) }}
+    <!-- Ambient glowing backdrop orbs -->
+    <div class="glow-orb orb-1"></div>
+    <div class="glow-orb orb-2"></div>
+
+    <div class="app-wrapper">
+        <!-- Top Navigation -->
+        <header class="navbar">
+            <div class="brand-identity">
+                <a href="/" style="text-decoration: none; display: flex; align-items: center; gap: 14px;">
+                    <div class="brand-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="4" width="18" height="12" rx="2"></rect>
+                            <line x1="2" y1="20" x2="22" y2="20"></line>
+                        </svg>
+                    </div>
+                    <div class="brand-text">
+                        <h1>LapPulse AI</h1>
+                        <p>Machine Learning Laptop Valuation Engine</p>
+                    </div>
+                </a>
             </div>
-            <p>The predicted price for this laptop configuration falls within the range shown above.</p>
+
+            <div class="navbar-badges">
+                <div class="status-badge">
+                    <span class="status-dot"></span>
+                    <span>Valuation Complete</span>
+                </div>
+            </div>
+        </header>
+
+        <div class="result-page-container">
+            <!-- Hero Result Card -->
+            <div class="result-hero" id="resultHero">
+                <div class="result-icon-badge">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                </div>
+                <h2>Valuation Completed</h2>
+                <p>Based on our trained machine learning pipeline analysis across current laptop market configurations</p>
+
+                <div class="result-price-large" id="resultPrice">
+                    ₹ {{ "{:,}".format(prediction) }}
+                </div>
+
+                <div class="result-range">
+                    Estimated Range: ₹ {{ "{:,}".format(min_price) }} &mdash; ₹ {{ "{:,}".format(max_price) }}
+                </div>
+
+                {% if specs and specs.tier %}
+                <div class="tier-badge" style="margin-top: 14px;">
+                    Market Segment: <span style="color: #38bdf8; font-weight: 700;">{{ specs.tier }}</span>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Hardware Specification Breakdown Sheet -->
+            <div class="result-specs-card">
+                <h3>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#818cf8" stroke-width="2">
+                        <rect x="2" y="3" width="20" height="14" rx="2"></rect>
+                        <line x1="8" y1="21" x2="16" y2="21"></line>
+                        <line x1="12" y1="17" x2="12" y2="21"></line>
+                    </svg>
+                    <span>Configured Specification Sheet</span>
+                </h3>
+
+                {% if specs %}
+                <table class="specs-table">
+                    <tbody>
+                        <tr>
+                            <td>Manufacturer Brand</td>
+                            <td><strong>{{ specs.company }}</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Chassis Form Factor</td>
+                            <td>{{ specs.type }}</td>
+                        </tr>
+                        <tr>
+                            <td>Processor (CPU)</td>
+                            <td>{{ specs.cpu }}</td>
+                        </tr>
+                        <tr>
+                            <td>Graphics Processing Unit (GPU)</td>
+                            <td>{{ specs.gpu }}</td>
+                        </tr>
+                        <tr>
+                            <td>System Memory (RAM)</td>
+                            <td>{{ specs.ram }} GB</td>
+                        </tr>
+                        <tr>
+                            <td>Storage Configuration</td>
+                            <td>
+                                {% if specs.ssd > 0 %}{{ specs.ssd }}GB SSD{% endif %}
+                                {% if specs.hdd > 0 %}{% if specs.ssd > 0 %} + {% endif %}{{ specs.hdd }}GB HDD{% endif %}
+                                {% if specs.ssd == 0 and specs.hdd == 0 %}Standard Drive{% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Display Screen</td>
+                            <td>{{ specs.screen_size }}" &bull; {{ specs.resolution }} ({{ specs.ppi }} PPI)</td>
+                        </tr>
+                        <tr>
+                            <td>Display Features</td>
+                            <td>
+                                {% if specs.touchscreen == 'Yes' %}<span class="tag-pill" style="margin-right: 4px;">Touchscreen</span>{% endif %}
+                                {% if specs.ips == 'Yes' %}<span class="tag-pill">IPS TrueColor</span>{% endif %}
+                                {% if specs.touchscreen == 'No' and specs.ips == 'No' %}Standard Panel{% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Operating System</td>
+                            <td>{{ specs.os }}</td>
+                        </tr>
+                        <tr>
+                            <td>Chassis Weight</td>
+                            <td>{{ specs.weight }} kg</td>
+                        </tr>
+                    </tbody>
+                </table>
+                {% else %}
+                <p style="color: var(--text-muted); text-align: center; padding: 20px 0;">Configuration parameters recorded successfully.</p>
+                {% endif %}
+            </div>
+
+            <!-- Action CTAs -->
+            <div class="result-cta-bar">
+                <a href="/" class="btn-primary" style="text-decoration: none; max-width: 260px; text-align: center;">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="19" y1="12" x2="5" y2="12"></line>
+                        <polyline points="12 19 5 12 12 5"></polyline>
+                    </svg>
+                    <span>Configure Another</span>
+                </a>
+                <button type="button" class="btn-secondary" id="copyShareBtn" onclick="copySpecsSummary()" style="max-width: 220px;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                    </svg>
+                    <span>Copy Summary</span>
+                </button>
+            </div>
         </div>
-        
-        <div style="margin-top: 30px;">
-            <a href="/" class="btn">Predict Another Laptop</a>
-            <a href="/" class="btn btn-secondary">Start Over</a>
-        </div>
+
+        <footer class="footer">
+            <p>LapPulse AI &copy; 2026 &bull; Machine Learning Valuation Engine</p>
+        </footer>
     </div>
+
+    <!-- Script for copy summary toast -->
+    <script>
+        function copySpecsSummary() {
+            const price = "{{ prediction }}";
+            const text = "LapPulse AI Laptop Valuation: ₹" + Number(price).toLocaleString('en-IN') + 
+                         "\nRange: ₹{{ '{:,}'.format(min_price) }} - ₹{{ '{:,}'.format(max_price) }}" +
+                         "{% if specs %}\nSpecs: {{ specs.company }} {{ specs.type }} | {{ specs.cpu }} | {{ specs.ram }}GB RAM | {{ specs.screen_size }}\" ({{ specs.resolution }}){% endif %}";
+            
+            navigator.clipboard.writeText(text).then(() => {
+                const btn = document.getElementById('copyShareBtn');
+                const orig = btn.innerHTML;
+                btn.innerHTML = '<span>✓ Copied to Clipboard!</span>';
+                setTimeout(() => { btn.innerHTML = orig; }, 2500);
+            }).catch(() => {
+                alert('Valuation details copied!');
+            });
+        }
+    </script>
 </body>
 </html>
