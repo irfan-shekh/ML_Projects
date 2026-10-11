@@ -42,7 +42,7 @@ A machine learning web application that predicts laptop prices based on various 
 
 3. **Run the application**
    ```bash
-   python app_flask_fixed.py
+   python app.py
    ```
 
 4. **Access the application**
