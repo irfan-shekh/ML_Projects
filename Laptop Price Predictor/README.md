@@ -1,4 +1,4 @@
-﻿# LapPulse AI ΓÇö Intelligent Laptop Price Predictor ≡ƒÆ╗ΓÜí
+# LapPulse AI — Intelligent Laptop Price Predictor 💻⚡
 
 [![Python](https://img.shields.io/badge/Python-3.8+-3776AB?style=flat&logo=python&logoColor=white)](https://www.python.org/)
 [![Flask](https://img.shields.io/badge/Flask-Web%20Framework-000000?style=flat&logo=flask&logoColor=white)](https://flask.palletsprojects.com/)
@@ -9,24 +9,24 @@ An end-to-end Machine Learning web application designed to estimate and predict 
 
 ---
 
-## Γ£¿ Modern UI & App Highlights
+## ✨ Modern UI & App Highlights
 
-- ≡ƒÄ¿ **Cyber-Indigo Glassmorphism Interface**: Deep slate theme (`#070A13`) with glowing gradient accents, frosted glass cards (`backdrop-filter: blur(16px)`), and micro-animations.
-- ΓÜí **Real-Time Live Valuation**: Instant asynchronous valuation without full-page reloads, featuring smooth animated counter transitions.
-- ≡ƒÄ» **1-Click Hardware Presets**:
-  - ≡ƒÄ« **Gaming Rig** (Asus, 16GB RAM, Core i7, Dedicated Nvidia, 512GB SSD)
-  - ≡ƒÆ╝ **Executive Ultrabook** (Apple, 16GB RAM, Core i5, 512GB SSD, 1.25kg)
-  - ≡ƒÄô **Student Value** (HP, 8GB RAM, Core i5, 256GB SSD)
-  - ≡ƒÄ¿ **Creator Studio** (Dell, 32GB RAM, 4K Screen, Core i7, 1TB SSD)
-- ≡ƒÆ▒ **Multi-Currency Live Converter**: Instant toggle between Indian Rupee (**Γé╣ INR**), US Dollar (**$ USD**), and Euro (**Γé¼ EUR**).
-- ≡ƒûÑ∩╕Å **Live Display PPI & Retina Indicator**: Calculates Pixels-Per-Inch (`PPI = ΓêÜ(w┬▓ + h┬▓) / diagonal`) in real time and classifies display clarity (Retina Ultra-Sharp, Hi-DPI, Full HD Standard).
-- ΓÜû∩╕Å **Synced Range Sliders & Inputs**: Real-time slider and numeric box synchronization for chassis weight and display diagonal.
-- ≡ƒôè **Dynamic Specification Sheet**: Live preview card with dynamic feature tags (*Dedicated GPU*, *Retina Clarity*, *Featherweight Nomad*, etc.) and market valuation tiers.
-- ≡ƒöä **Dual Interaction Mode**: Supports both instant in-page AJAX prediction and full-page standard POST submission with complete shareable summary.
+- 🎨 **Cyber-Indigo Glassmorphism Interface**: Deep slate theme (`#070A13`) with glowing gradient accents, frosted glass cards (`backdrop-filter: blur(16px)`), and micro-animations.
+- ⚡ **Real-Time Live Valuation**: Instant asynchronous valuation without full-page reloads, featuring smooth animated counter transitions.
+- 🎯 **1-Click Hardware Presets**:
+  - 🎮 **Gaming Rig** (Asus, 16GB RAM, Core i7, Dedicated Nvidia, 512GB SSD)
+  - 💼 **Executive Ultrabook** (Apple, 16GB RAM, Core i5, 512GB SSD, 1.25kg)
+  - 🎓 **Student Value** (HP, 8GB RAM, Core i5, 256GB SSD)
+  - 🎨 **Creator Studio** (Dell, 32GB RAM, 4K Screen, Core i7, 1TB SSD)
+- 💱 **Multi-Currency Live Converter**: Instant toggle between Indian Rupee (**₹ INR**), US Dollar (**$ USD**), and Euro (**€ EUR**).
+- 🖥️ **Live Display PPI & Retina Indicator**: Calculates Pixels-Per-Inch (`PPI = √(w² + h²) / diagonal`) in real time and classifies display clarity (Retina Ultra-Sharp, Hi-DPI, Full HD Standard).
+- ⚖️ **Synced Range Sliders & Inputs**: Real-time slider and numeric box synchronization for chassis weight and display diagonal.
+- 📊 **Dynamic Specification Sheet**: Live preview card with dynamic feature tags (*Dedicated GPU*, *Retina Clarity*, *Featherweight Nomad*, etc.) and market valuation tiers.
+- 🔄 **Dual Interaction Mode**: Supports both instant in-page AJAX prediction and full-page standard POST submission with complete shareable summary.
 
 ---
 
-## ≡ƒ¢á∩╕Å Technology Stack
+## 🛠️ Technology Stack
 
 | Layer | Technologies |
 |---|---|
@@ -38,37 +38,37 @@ An end-to-end Machine Learning web application designed to estimate and predict 
 
 ---
 
-## ≡ƒôü Project Structure
+## 📁 Project Structure
 
 ```
-laptop_price_prediction/
-Γö£ΓöÇΓöÇ app.py                      # Core Flask web server & prediction endpoints
-Γö£ΓöÇΓöÇ pipe.pkl                    # Trained Scikit-learn ML pipeline model
-Γö£ΓöÇΓöÇ traineddata.csv             # Processed feature dataset for validation & dropdowns
-Γö£ΓöÇΓöÇ laptop_data.csv             # Raw laptop dataset
-Γö£ΓöÇΓöÇ requirements.txt            # Python dependencies
-Γö£ΓöÇΓöÇ static/                     # Static styling and client scripts
-Γöé   Γö£ΓöÇΓöÇ css/
-Γöé   Γöé   ΓööΓöÇΓöÇ style.css           # Custom Cyber-Indigo glassmorphic stylesheet
-Γöé   ΓööΓöÇΓöÇ js/
-Γöé       ΓööΓöÇΓöÇ main.js             # Client controller (AJAX, presets, live PPI, currency)
-Γö£ΓöÇΓöÇ templates/                  # Jinja2 HTML templates
-Γöé   Γö£ΓöÇΓöÇ index.html              # Main configurator & live valuation dashboard
-Γöé   ΓööΓöÇΓöÇ result.html             # Valuation result & shareable spec breakdown
-Γö£ΓöÇΓöÇ Laptop Price Predictor.ipynb# Jupyter notebook for exploratory data analysis & training
-ΓööΓöÇΓöÇ README.md                   # Project documentation
+Laptop Price Predictor/
+├── app.py                      # Core Flask web server & prediction endpoints
+├── pipe.pkl                    # Trained Scikit-learn ML pipeline model
+├── traineddata.csv             # Processed feature dataset for validation & dropdowns
+├── laptop_data.csv             # Raw laptop dataset
+├── requirements.txt            # Python dependencies
+├── static/                     # Static styling and client scripts
+│   ├── css/
+│   │   └── style.css           # Custom Cyber-Indigo glassmorphic stylesheet
+│   └── js/
+│       └── main.js             # Client controller (AJAX, presets, live PPI, currency)
+├── templates/                  # Jinja2 HTML templates
+│   ├── index.html              # Main configurator & live valuation dashboard
+│   └── result.html             # Valuation result & shareable spec breakdown
+├── Laptop Price Predictor.ipynb# Jupyter notebook for exploratory data analysis & training
+└── README.md                   # Project documentation
 ```
 
 ---
 
-## ≡ƒÜÇ Installation & Getting Started
+## 🚀 Installation & Getting Started
 
 ### 1. Prerequisites
 - Python 3.8 or above installed on your system.
 
-### 2. Clone / Open Directory
+### 2. Navigate to Project Directory
 ```bash
-cd laptop_price_prediction
+cd "Laptop Price Predictor"
 ```
 
 ### 3. Install Dependencies
@@ -90,7 +90,7 @@ http://localhost:5000
 
 ---
 
-## ≡ƒºá Machine Learning Model Pipeline
+## 🧠 Machine Learning Model Pipeline
 
 The predictive engine uses a **Scikit-Learn Pipeline** trained on laptop hardware records:
 
@@ -104,25 +104,25 @@ The predictive engine uses a **Scikit-Learn Pipeline** trained on laptop hardwar
 2. **Regressor**:
    - `RandomForestRegressor` trained on log-transformed prices (`np.log(Price)`).
 3. **Inference**:
-   - Prediction is exponentiated back to price space (`np.exp(...)`) with confidence boundary (`┬▒ Γé╣1,500`).
+   - Prediction is exponentiated back to price space (`np.exp(...)`) with confidence boundary (`± ₹1,500`).
 
 ### Features Expected by the Model:
-1. `Company` ΓÇö Brand manufacturer (Apple, Dell, HP, Asus, Lenovo, Acer, MSI, etc.)
-2. `TypeName` ΓÇö Form factor (Ultrabook, Notebook, Gaming, Workstation, 2 in 1 Convertible, Netbook)
-3. `Ram` ΓÇö System memory (2 GB to 64 GB)
-4. `OpSys` ΓÇö Operating system platform (Windows, Mac, Other)
-5. `Weight` ΓÇö Chassis weight in kilograms
-6. `TouchScreen` ΓÇö Touchscreen support (0 or 1)
-7. `IPS` ΓÇö IPS display panel (0 or 1)
-8. `PPI` ΓÇö Screen pixel density
-9. `CPU_name` ΓÇö Processor tier (Intel Core i3, i5, i7, AMD Processor, Other Intel)
-10. `HDD` ΓÇö Hard disk capacity in GB
-11. `SSD` ΓÇö Solid-state drive capacity in GB
-12. `Gpu brand` ΓÇö Graphics provider (Intel, AMD, Nvidia)
+1. `Company` — Brand manufacturer (Apple, Dell, HP, Asus, Lenovo, Acer, MSI, etc.)
+2. `TypeName` — Form factor (Ultrabook, Notebook, Gaming, Workstation, 2 in 1 Convertible, Netbook)
+3. `Ram` — System memory (2 GB to 64 GB)
+4. `OpSys` — Operating system platform (Windows, Mac, Other)
+5. `Weight` — Chassis weight in kilograms
+6. `TouchScreen` — Touchscreen support (0 or 1)
+7. `IPS` — IPS display panel (0 or 1)
+8. `PPI` — Screen pixel density
+9. `CPU_name` — Processor tier (Intel Core i3, i5, i7, AMD Processor, Other Intel)
+10. `HDD` — Hard disk capacity in GB
+11. `SSD` — Solid-state drive capacity in GB
+12. `Gpu brand` — Graphics provider (Intel, AMD, Nvidia)
 
 ---
 
-## ≡ƒöî API Endpoint
+## 🔌 API Endpoint
 
 ### `POST /predict`
 Supports both JSON API payload and standard form-encoded data.
@@ -170,12 +170,12 @@ Supports both JSON API payload and standard form-encoded data.
 
 ---
 
-## Γî¿∩╕Å Keyboard Shortcuts
+## ⌨️ Keyboard Shortcuts
 
 - `Ctrl + Enter` (or `Cmd + Enter` on macOS): Instantly trigger price estimation.
 
 ---
 
-## ≡ƒôä License
+## 📄 License
 
 This project is open-source and available under the [MIT License](LICENSE).
