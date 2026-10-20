@@ -10,7 +10,7 @@ A curated collection of end-to-end Machine Learning, Exploratory Data Analysis (
 | :--- | :--- | :--- |
 | [**Car Market Trends Analysis**](./Car%20Market%20Trends%20Analysis%20with%20Car%20Dekho%20Data) | Exploratory Data Analysis (EDA) analyzing car market pricing trends using CarDekho data. | Python, Jupyter, Pandas, Seaborn |
 | [**Car Selling Price Prediction**](./Car%20Selling%20Price%20Prediction) | Machine learning project predicting used car selling prices based on vehicle features and usage. | Python, Jupyter, Scikit-learn, Pandas |
-| [**Seasonal-Agriculture-Performance-Analysis**](./Car%20Selling%20Price%20Prediction) | An end-to-end data analytics project examining agricultural performance across Kharif, Rabi, and Zaid seasons. | Python, Jupyter, Scikit-learn, Pandas |
+| [**Seasonal-Agriculture-Performance-Analysis**](./Seasonal-Agriculture-Performance-Analysis) | An end-to-end data analytics project examining agricultural performance across Kharif, Rabi, and Zaid seasons. | Python, Jupyter, Scikit-learn, Pandas |
 ---
 
 ## 🛠️ Repository Structure
